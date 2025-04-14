@@ -8,7 +8,7 @@ on:
 
 jobs:
   dev:
-    runs-on: ubuntu-latest-l
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -50,7 +50,6 @@ jobs:
       - name: Build and push the images to Docker Hub
         uses: docker/bake-action@v2
         with:
-          targets: flux1-dev
           push: true
           set: |
             *.args.DOCKERHUB_REPO=${{ env.DOCKERHUB_REPO }}
