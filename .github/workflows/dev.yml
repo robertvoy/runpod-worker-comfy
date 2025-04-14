@@ -49,8 +49,8 @@ jobs:
 
       - name: Build and push the images to Docker Hub
         uses: docker/bake-action@v2
-        targets: flux1-dev
         with:
+          targets: flux1-dev
           push: true
           set: |
             *.args.DOCKERHUB_REPO=${{ env.DOCKERHUB_REPO }}
