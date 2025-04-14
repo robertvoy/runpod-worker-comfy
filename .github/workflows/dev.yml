@@ -49,6 +49,7 @@ jobs:
 
       - name: Build and push the images to Docker Hub
         uses: docker/bake-action@v2
+        targets: flux1-dev
         with:
           push: true
           set: |
