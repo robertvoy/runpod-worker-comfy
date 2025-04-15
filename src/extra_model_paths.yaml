@@ -8,5 +8,6 @@ runpod_worker_comfy:
   embeddings: models/embeddings/
   loras: models/loras/
   upscale_models: models/upscale_models/
+  style_models: models/style_models/
   vae: models/vae/
   unet: models/unet/
