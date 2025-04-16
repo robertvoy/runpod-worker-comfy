@@ -27,10 +27,25 @@ RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 RUN pip install comfy-cli
 
 # Install ComfyUI
-RUN /usr/bin/yes | comfy --workspace /comfyui install --cuda-version 11.8 --nvidia --version 0.3.26
+RUN /usr/bin/yes | comfy --workspace /comfyui install --cuda-version 11.8 --nvidia --version 0.3.26 --skip-manager
 
 # Change working directory to ComfyUI
 WORKDIR /comfyui
+
+# ---- Install Custom Nodes ----
+# Navigate to the custom nodes directory
+WORKDIR /comfyui/custom_nodes
+
+# Clone the ComfyUI_essentials repository
+RUN git clone https://github.com/cubiq/ComfyUI_essentials.git ComfyUI_essentials
+
+# Navigate into the cloned directory and install its requirements
+WORKDIR /comfyui/custom_nodes/ComfyUI_essentials
+RUN pip install -r requirements.txt
+
+# Go back to the main ComfyUI directory
+WORKDIR /comfyui
+# ---- End Custom Nodes ----
 
 # Install runpod
 RUN pip install runpod requests
@@ -42,14 +57,8 @@ ADD src/extra_model_paths.yaml ./
 WORKDIR /
 
 # Add scripts
-ADD src/start.sh src/restore_snapshot.sh src/rp_handler.py test_input.json ./
-RUN chmod +x /start.sh /restore_snapshot.sh
-
-# Optionally copy the snapshot file
-ADD *snapshot*.json /
-
-# Restore the snapshot to install custom nodes
-RUN /restore_snapshot.sh
+ADD src/start.sh src/rp_handler.py test_input.json ./
+RUN chmod +x /start.sh
 
 # Start container
 CMD ["/start.sh"]
