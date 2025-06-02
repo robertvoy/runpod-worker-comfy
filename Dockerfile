@@ -43,6 +43,9 @@ RUN git clone https://github.com/cubiq/ComfyUI_essentials.git ComfyUI_essentials
 WORKDIR /comfyui/custom_nodes/ComfyUI_essentials
 RUN pip install -r requirements.txt
 
+# Go back to custom_nodes directory BEFORE cloning TeaCache
+WORKDIR /comfyui/custom_nodes
+
 # Clone the ComfyUI_essentials repository
 RUN git clone https://github.com/welltop-cn/ComfyUI-TeaCache ComfyUI-TeaCache
 
